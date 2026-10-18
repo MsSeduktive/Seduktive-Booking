@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin · Bookings</title>
+<meta name="theme-color" content="#000000">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+:root { --bg:#000; --surface:#0c0903; --line:#4a3a14; --text:#f7edd3; --muted:#b8a67c; --accent:#e6b94a; --accent-ink:#1a1200; --ok:#8fd1a6; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin:0; background:radial-gradient(ellipse 120% 40% at 50% -5%, #2b2109 0%, #000 70%) fixed, #000; color:var(--text); font:14px/1.5 system-ui,-apple-system,'Segoe UI',sans-serif; padding:20px max(16px, env(safe-area-inset-left,0px)) 48px; }
+h1 { font-size:22px; margin:0; font-weight:600; display:flex; align-items:center; gap:12px; }
+.lg { width:44px; height:44px; border-radius:50%; background:#000; box-shadow:0 0 0 1px #6b5319, 0 0 16px rgba(230,185,74,.25); }
+#login { text-align:center; align-items:center; }
+#login .lg { width:120px; height:120px; }
+#login h1 { justify-content:center; }
+.top { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
+.bar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+input, select, button, textarea { font:inherit; color:var(--text); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:8px 10px; }
+button { cursor:pointer; background:linear-gradient(135deg,#fff1b0,#f0c85a 30%,#c8962a 65%,#f5d36a); color:var(--accent-ink); border:0; font-weight:600; }
+button.ghost { background:transparent; color:var(--accent); border:1px solid var(--accent); }
+#login { max-width:340px; margin:80px auto; display:flex; flex-direction:column; gap:12px; }
+#login input { width:100%; }
+.err { color:#f0a0a0; min-height:1.2em; margin:0; }
+.stats { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+.stat { background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:8px 12px; }
+.stat b { display:block; font-size:18px; color:var(--accent); }
+.wrapT { overflow-x:auto; border:1px solid var(--line); border-radius:10px; }
+table { border-collapse:collapse; width:100%; min-width:900px; }
+th, td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+th { font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); background:var(--surface); position:sticky; top:0; }
+td small { color:var(--muted); display:block; }
+td pre { white-space:pre-wrap; margin:6px 0 0; font:12px/1.5 ui-monospace,Menlo,monospace; color:var(--muted); }
+summary { cursor:pointer; color:var(--accent); font-size:12px; }
+.note { width:180px; }
+.saved { color:var(--ok); font-size:12px; }
+[hidden] { display:none !important; }
+</style>
+
+<div id="login">
+  <img class="lg" src="/logo-ent.webp" width="120" height="120" alt="Seduktive Ent">
+  <h1>Admin login</h1>
+  <input type="password" id="pw" placeholder="Admin password" autocomplete="current-password">
+  <button id="loginBtn" type="button">Log in</button>
+  <p class="err" id="loginErr" role="alert"></p>
+</div>
+
+<div id="app" hidden>
+  <div class="top">
+    <h1><img class="lg" src="/logo-ent.webp" width="44" height="44" alt="">Bookings</h1>
+    <div class="bar">
+      <select id="filter">
+        <option value="">All statuses</option>
+        <option>pending</option><option>confirmed</option><option>paid</option><option>completed</option><option>cancelled</option>
+      </select>
+      <input type="text" id="search" placeholder="Search user, handle, service">
+      <button class="ghost" id="refresh" type="button">Refresh</button>
+      <button class="ghost" id="logout" type="button">Log out</button>
+    </div>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div class="wrapT">
+    <table>
+      <thead><tr><th>#</th><th>Created</th><th>User</th><th>Service</th><th>Total / deposit</th><th>When</th><th>Status</th><th>Admin note</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+  <p class="err" id="err" role="alert"></p>
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var all = [];
+  var STATUSES = ['pending', 'confirmed', 'paid', 'completed', 'cancelled'];
+  function money(n) { n = Number(n); return '$' + (Math.round(n * 100) % 100 === 0 ? Math.round(n) : n.toFixed(2)); }
+  function api(path, method, body) {
+    return fetch(path, { method: method || 'GET', headers: body ? { 'Content-Type': 'application/json' } : {}, body: body ? JSON.stringify(body) : undefined, credentials: 'same-origin' })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) { var e = new Error(j.error || 'Error'); e.status = r.status; throw e; } return j; }); });
+  }
+  function el(tag, text, cls) { var e = document.createElement(tag); if (text != null) e.textContent = text; if (cls) e.className = cls; return e; }
+
+  function show(loggedIn) { $('login').hidden = loggedIn; $('app').hidden = !loggedIn; }
+
+  function load() {
+    var f = $('filter').value;
+    api('/api/admin/bookings' + (f ? '?status=' + encodeURIComponent(f) : '')).then(function (j) {
+      all = j.bookings; show(true); render();
+    }).catch(function (e) { if (e.status === 401) show(false); else $('err').textContent = e.message; });
+  }
+
+  function render() {
+    var q = $('search').value.trim().toLowerCase();
+    var list = all.filter(function (b) {
+      if (!q) return true;
+      return [b.users && b.users.username, b.handle, b.nickname, b.service, b.option, b.app].join(' ').toLowerCase().indexOf(q) > -1;
+    });
+    // stats
+    var st = $('stats'); st.innerHTML = '';
+    var counts = {}; STATUSES.forEach(function (s) { counts[s] = 0; });
+    var open = 0;
+    all.forEach(function (b) { counts[b.status]++; if (b.status === 'pending' || b.status === 'confirmed') open += Number(b.total); });
+    STATUSES.forEach(function (s) { var d = el('div', null, 'stat'); d.appendChild(el('b', counts[s])); d.appendChild(document.createTextNode(s)); st.appendChild(d); });
+    var d = el('div', null, 'stat'); d.appendChild(el('b', money(open))); d.appendChild(document.createTextNode('open value')); st.appendChild(d);
+
+    var tb = $('rows'); tb.innerHTML = '';
+    if (!list.length) { var tr = el('tr'); var td = el('td', 'No bookings.'); td.colSpan = 8; tr.appendChild(td); tb.appendChild(tr); return; }
+    list.forEach(function (b) {
+      var tr = el('tr');
+      tr.appendChild(el('td', b.id));
+      var c = el('td', new Date(b.created_at).toLocaleString()); tr.appendChild(c);
+      var u = el('td', b.users ? b.users.username : '?'); u.appendChild(el('small', (b.nickname || '') + ' · ' + (b.app || '') + ' ' + (b.handle || ''))); tr.appendChild(u);
+      var s = el('td', b.service + ', ' + b.option);
+      if (b.area) s.appendChild(el('small', 'Area: ' + b.area + (b.book_with ? ' · ' + b.book_with : '')));
+      if (b.delivery) s.appendChild(el('small', 'Delivery: ' + b.delivery));
+      var det = document.createElement('details'); det.appendChild(el('summary', 'Full request'));
+      det.appendChild(el('pre', (b.request_text || '') )); s.appendChild(det);
+      tr.appendChild(s);
+      var m = el('td', money(b.total)); m.appendChild(el('small', 'deposit ' + money(b.deposit))); tr.appendChild(m);
+      tr.appendChild(el('td', (b.preferred_date || '') + (b.preferred_time ? ' ' + b.preferred_time : '') || ''));
+      var sel = document.createElement('select');
+      STATUSES.forEach(function (x) { var o = el('option', x); o.value = x; if (x === b.status) o.selected = true; sel.appendChild(o); });
+      var sv = el('span', '', 'saved');
+      sel.onchange = function () { save(b, { status: sel.value }, sv); };
+      var stTd = el('td'); stTd.appendChild(sel); stTd.appendChild(sv); tr.appendChild(stTd);
+      var note = document.createElement('input'); note.className = 'note'; note.value = b.admin_note || ''; note.placeholder = 'Note';
+      var nv = el('span', '', 'saved');
+      note.onchange = function () { save(b, { admin_note: note.value }, nv); };
+      var nTd = el('td'); nTd.appendChild(note); nTd.appendChild(nv); tr.appendChild(nTd);
+      tb.appendChild(tr);
+    });
+  }
+
+  function save(b, patch, tag) {
+    patch.id = b.id;
+    api('/api/admin/bookings', 'PATCH', patch).then(function () {
+      Object.keys(patch).forEach(function (k) { b[k] = patch[k]; });
+      tag.textContent = ' saved'; setTimeout(function () { tag.textContent = ''; }, 1500);
+      if (patch.status) render();
+    }).catch(function (e) { tag.textContent = ' ' + e.message; });
+  }
+
+  $('loginBtn').onclick = function () {
+    $('loginErr').textContent = '';
+    api('/api/admin/login', 'POST', { password: $('pw').value })
+      .then(function () { $('pw').value = ''; load(); })
+      .catch(function (e) { $('loginErr').textContent = e.message; });
+  };
+  $('pw').onkeydown = function (e) { if (e.key === 'Enter') $('loginBtn').click(); };
+  $('logout').onclick = function () { api('/api/admin/logout', 'POST', {}).then(function () { show(false); }); };
+  $('refresh').onclick = load;
+  $('filter').onchange = load;
+  $('search').oninput = render;
+  load();
+})();
+</script>
+
+</html>

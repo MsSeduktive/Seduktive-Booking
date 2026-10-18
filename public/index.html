@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Seduktive Ent Booking</title>
+<meta name="theme-color" content="#000000">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:title" content="Book Ms Seduktive">
+<meta property="og:image" content="/icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,500;1,500&family=Manrope:wght@400;500;600&display=swap">
+<style>
+:root {
+  --bg: #000; --surface: #0c0903; --line: #4a3a14; --text: #f7edd3; --muted: #b8a67c;
+  --accent: #e6b94a; --accent-ink: #1a1200; --ok: #8fd1a6;
+  --gold-grad: linear-gradient(135deg, #fff1b0 0%, #f0c85a 28%, #c8962a 60%, #f5d36a 100%);
+  --font-display: 'Bodoni Moda', 'Didot', Georgia, serif;
+  --font-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: radial-gradient(ellipse 120% 60% at 50% -5%, #2b2109 0%, #0a0702 45%, #000 75%) fixed, #000; color: var(--text); font-family: var(--font-body); font-size: 15px; line-height: 1.6; margin: 0; padding-block: 28px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header { display: flex; flex-direction: column; gap: 10px; align-items: center; text-align: center; }
+.logo { width: min(240px, 62vw); height: auto; aspect-ratio: 1; border-radius: 50%; display: block; background: #000; box-shadow: 0 0 0 1px #6b5319, 0 0 38px rgba(230,185,74,.28), 0 0 90px rgba(230,185,74,.12); }
+.links { justify-content: center; }
+.eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+h1 { background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: #f0c85a; font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: clamp(34px, 9vw, 48px); line-height: 1.1; margin: 0; text-wrap: balance; }
+.lede { color: var(--muted); margin: 0; max-width: 54ch; }
+.sep { width: 120px; height: 1px; background: linear-gradient(90deg, transparent, #c8962a, transparent); margin: 2px auto; }
+.links { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13px; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible, label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+section { display: flex; flex-direction: column; gap: 14px; }
+h2 { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin: 0; display: flex; align-items: baseline; gap: 10px; }
+h2 .n { font-family: var(--font-display); font-style: italic; font-size: 20px; color: var(--accent); letter-spacing: 0; text-transform: none; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.tabs button { font: inherit; font-size: 13px; font-weight: 500; color: var(--text); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; cursor: pointer; }
+.tabs button[aria-pressed="true"] { background: var(--gold-grad); color: var(--accent-ink); border-color: var(--accent); }
+.tabs button:hover:not([aria-pressed="true"]) { border-color: var(--accent); }
+.blurb { color: var(--muted); font-size: 13px; margin: 0; }
+.opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.opt { position: relative; }
+.opt input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.opt span { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; font-size: 14px; }
+.opt em { font-style: normal; }
+.grp { grid-column: 1 / -1; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-top: 6px; }
+.opt span b { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--accent); }
+.opt input:checked + span { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent), 0 0 18px rgba(230,185,74,.18); }
+.opt input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 480px) { .row { grid-template-columns: 1fr; } }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field label { font-size: 12px; font-weight: 600; color: var(--muted); }
+.field .hint { font-size: 12px; color: var(--muted); }
+input[type=text], input[type=password], input[type=date], select, textarea { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; width: 100%; min-width: 0; }
+textarea { min-height: 96px; resize: vertical; }
+input::placeholder, textarea::placeholder { color: #7d6f4a; }
+.msbadge { width: 88px; height: 88px; border-radius: 50%; display: block; margin: 0 auto; background: #000; box-shadow: 0 0 0 1px #6b5319, 0 0 26px rgba(230,185,74,.22); }
+footer { text-align: center; }
+footer .msbadge { margin-bottom: 12px; }
+.err { color: #f0a0a0; font-size: 13px; min-height: 1em; margin: 0; }
+.totalbox { box-shadow: 0 0 30px rgba(230,185,74,.07); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.totalline { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-variant-numeric: tabular-nums; }
+.totalline .k { color: var(--muted); font-size: 13px; }
+.totalline.big .v { font-family: var(--font-display); font-size: 30px; color: var(--accent); font-style: italic; background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.pay { margin: 4px 0 0; font-size: 13px; color: var(--text); border-top: 1px solid var(--line); padding-top: 10px; }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+details ol { margin: 12px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; color: var(--muted); font-size: 13.5px; }
+details ol b { color: var(--text); font-weight: 600; }
+.agree { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; }
+.agree input { margin-top: 4px; accent-color: var(--accent); width: 18px; height: 18px; flex: none; }
+.btn { font: inherit; font-weight: 700; font-size: 15px; background: var(--gold-grad); color: var(--accent-ink); border: 0; border-radius: 10px; padding: 14px 18px; cursor: pointer; width: 100%; }
+.btn.ghost { background: transparent !important; color: var(--accent); border: 1px solid var(--accent); }
+.btn.small { width: auto; padding: 9px 14px; font-size: 13px; }
+.btn:hover { filter: brightness(1.08); }
+.btn:disabled { opacity: .6; cursor: wait; }
+#result { display: none; flex-direction: column; gap: 12px; }
+#result.show { display: flex; }
+#msg { font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace; font-size: 13px; min-height: 220px; }
+.steps { margin: 0; padding-left: 20px; color: var(--muted); font-size: 13.5px; display: flex; flex-direction: column; gap: 4px; }
+.btnrow { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+@media (max-width: 480px) { .btnrow { grid-template-columns: 1fr; } }
+.btnrow a { text-decoration: none; text-align: center; display: block; }
+.copied { color: var(--ok); font-size: 13px; min-height: 1em; margin: 0; }
+footer { border-top: 1px solid var(--line); padding-top: 16px; color: var(--muted); font-size: 12px; }
+/* account */
+.acct { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.acct .btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.acct .who { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.acct .who b { color: var(--accent); }
+.mine { display: flex; flex-direction: column; gap: 6px; font-size: 13.5px; }
+.mine div { display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid var(--line); padding-top: 6px; }
+.tag { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+[hidden] { display: none !important; }
+@media (prefers-reduced-motion: no-preference) { .btn { transition: filter .15s; } .tabs button, .opt span { transition: border-color .15s, background .15s; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <img class="logo" src="/logo-ent.webp" width="240" height="240" alt="Seduktive Ent emblem">
+    <div class="eyebrow">Seduktive Ent · 18+</div>
+    <h1>Book Ms Seduktive</h1>
+    <div class="sep" aria-hidden="true"></div>
+    <p class="lede">Custom videos, live video calls, photo packs, personal messages and in-person companionship. Pick what you want, see the price, and send me your request.</p>
+    <div class="links">
+      <a href="https://onlyfans.com/msseduktive" target="_blank" rel="noopener">OnlyFans</a>
+      <a href="https://www.fanvue.com/msseduktive" target="_blank" rel="noopener">Fanvue</a>
+      <a href="https://t.me/seduktiveent" target="_blank" rel="noopener">Telegram channel</a>
+    </div>
+  </header>
+
+  <section aria-labelledby="h-acct">
+    <h2 id="h-acct">Your account</h2>
+    <div class="acct" id="acctOut">
+      <p class="blurb" style="margin:0">Make a username and a 4-digit PIN to book. No email or real name needed.</p>
+      <div class="row">
+        <div class="field"><label for="au">Username</label><input type="text" id="au" autocomplete="username" placeholder="3 to 20 letters, numbers, _" maxlength="20"></div>
+        <div class="field"><label for="ap">4-digit PIN</label><input type="password" id="ap" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="current-password" placeholder="••••"></div>
+      </div>
+      <div class="btns">
+        <button class="btn small" id="doLogin" type="button">Log in</button>
+        <button class="btn small ghost" id="doSignup" type="button">Create account</button>
+      </div>
+      <p class="err" id="acctErr" role="alert"></p>
+    </div>
+    <div class="acct" id="acctIn" hidden>
+      <div class="who"><span>Signed in as <b id="whoName"></b></span><button class="btn small ghost" id="doLogout" type="button">Log out</button></div>
+      <div class="mine" id="mine" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-svc">
+    <h2 id="h-svc"><span class="n">1</span> Choose a service</h2>
+    <div class="tabs" id="tabs"></div>
+    <p class="blurb" id="blurb"></p>
+    <div class="opts" id="opts" role="radiogroup" aria-label="Options"></div>
+  </section>
+
+  <section aria-labelledby="h-rush" id="rushSec">
+    <h2 id="h-rush"><span class="n">2</span> <span id="h-rush-t">Delivery speed</span></h2>
+    <div class="row">
+      <div class="field" id="rushField">
+        <label for="rush">Delivery</label>
+        <select id="rush">
+          <option value="0">Standard, within 5 days (included)</option>
+          <option value="10">Within 48 hours (+$10)</option>
+          <option value="20">Within 24 hours (+$20)</option>
+          <option value="40">Same day (+$40, subject to my availability)</option>
+        </select>
+      </div>
+      <div class="field" id="dateField" hidden>
+        <label for="date">Preferred date</label>
+        <input type="date" id="date">
+      </div>
+      <div class="field" id="areaField" hidden>
+        <label for="area">Area and venue idea</label>
+        <input type="text" id="area" placeholder="Part of town, restaurant or event" autocomplete="off">
+        <span class="hint">Public places only. Home visits and overnight stays are not offered.</span>
+      </div>
+      <div class="field" id="withField" hidden>
+        <label for="withWho">Book with</label>
+        <select id="withWho"><option>Ms Seduktive</option><option>Any team member available</option></select>
+      </div>
+      <div class="field" id="timeField" hidden>
+        <label for="time">Preferred time</label>
+        <select id="time">
+          <option>Morning</option><option>Afternoon</option><option selected>Evening</option><option>Night</option>
+        </select>
+        <span class="hint">Include your time zone in the notes.</span>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-how">
+    <h2 id="h-how">How booking works</h2>
+    <ol class="steps">
+      <li>Log in, choose your service and fill in your details below.</li>
+      <li>Tick the terms box and tap Send booking request.</li>
+      <li>I see it right away and reply on the app you picked.</li>
+      <li>For in-person bookings we do a short video chat first.</li>
+      <li>Payment: DM me for payment info. I don't post payment details publicly.</li>
+      <li>Your booking is confirmed once I receive payment. Orders under $100 are paid in full, in-person and larger orders need a 50% deposit, and live calls are paid in full first.</li>
+      <li>I deliver your content, or we meet or go live at the booked time.</li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="h-you">
+    <h2 id="h-you"><span class="n">3</span> Your details</h2>
+    <div class="row">
+      <div class="field">
+        <label for="nick">What should I call you?</label>
+        <input type="text" id="nick" placeholder="A nickname is fine" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="plat">Where are we chatting?</label>
+        <select id="plat">
+          <option>OnlyFans</option><option>Fanvue</option><option>Telegram</option><option>X (Twitter)</option><option>Instagram</option><option>Snapchat</option><option>Reddit</option><option>WhatsApp</option><option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label for="handle">Your username or number on that app</label>
+      <input type="text" id="handle" placeholder="So I can find your chat" autocomplete="off">
+      <span class="hint">No legal name, phone number or address needed. I don't collect them.</span>
+    </div>
+    <div class="field">
+      <label for="notes">Details</label>
+      <textarea id="notes" placeholder="Occasion, name to say, outfit or setting ideas, what you'd like me to talk about, your time zone."></textarea>
+      <span class="hint">Non-explicit requests only. I may decline anything outside what is listed.</span>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-sum">
+    <h2 id="h-sum"><span class="n">4</span> Price and terms</h2>
+    <div class="totalbox" aria-live="polite">
+      <div class="totalline"><span class="k" id="sumName">Nothing selected yet</span><span class="v" id="sumBase">$0</span></div>
+      <div class="totalline"><span class="k" id="sumRushK">Delivery speed</span><span class="v" id="sumRush">$0</span></div>
+      <div class="totalline big"><span class="k">Total (USD)</span><span class="v" id="sumTotal">$0</span></div>
+      <p class="pay" id="payLine">Pick a service to see how payment works.</p>
+    </div>
+    <details>
+      <summary>Read the terms</summary>
+      <ol>
+        <li><b>18+ only.</b> By sending a request you confirm you are 18 or older.</li>
+        <li><b>Online services.</b> Videos, calls, photos and messages happen in chat, on video call or as delivered files. No personal contact details are shared. In-person bookings have their own terms, shown when you pick them.</li>
+        <li><b>What I offer.</b> Only the services listed here, all non-explicit. I can say no to any request without explanation.</li>
+        <li><b>Payment.</b> Prices are in USD. Orders under $100 are paid in full before I start. Orders of $100 or more need a 50% deposit, with the balance due before delivery. Live calls are paid in full before the session. DM me for payment info. I never post payment details publicly, and I only confirm a booking once payment is received.</li>
+        <li><b>Delivery.</b> Standard is within 5 days of payment. Faster delivery adds the fee shown above.</li>
+        <li><b>Refunds.</b> Custom work cannot be refunded once I have started. Before I start, you can cancel for a full refund. Live calls can be moved once with at least 24 hours notice. Missed calls are not refunded. If you arrive late, the call still ends at the booked time.</li>
+        <li><b>Your content is for you.</b> No sharing, posting, reselling, recording a live call, or editing my content with AI or any other tool. Breaking this means a permanent block and a takedown request.</li>
+        <li><b>Respect.</b> No pressure, harassment, threats or attempts to find out who I am or where I live. I can end any session at any time. If I end it because of your behaviour, there is no refund.</li>
+        <li><b>Platform rules.</b> OnlyFans and Fanvue terms apply to anything we do on those apps.</li>
+      </ol>
+    </details>
+    <details id="personTerms" hidden>
+      <summary>In-person terms</summary>
+      <ol>
+        <li><b>Professional companionship only.</b> No sexual services are offered, implied or negotiated. Requests for them end the booking and may be reported.</li>
+        <li><b>Public places.</b> Meetings happen in public venues. Home visits and overnight stays are not offered.</li>
+        <li><b>Safety checks.</b> Before I confirm, we do a short video chat so I can confirm you are who you say you are. I share my plans and location with a trusted person. I can leave at any time, and then the deposit is kept.</li>
+        <li><b>Deposit.</b> 50% to confirm, the balance before the meeting. Bookings are confirmed only when the deposit arrives.</li>
+        <li><b>Cancellation.</b> 48 or more hours before: full credit or a new date. 24 to 48 hours: 50% fee. Under 24 hours: no refund.</li>
+        <li><b>Lateness.</b> 15 to 30 minutes late: $25. 30 to 60 minutes late: $50. The booking still ends at the planned time.</li>
+        <li><b>Weekends and holidays.</b> +20% on the listed price. Same-day bookings add $40 or more.</li>
+        <li><b>Expenses.</b> You cover meals, tickets, transport, parking and any travel outside the agreed area.</li>
+        <li><b>Photos and recording.</b> No photos, video or audio of me without my clear permission.</li>
+        <li><b>Privacy.</b> I keep your details private and I expect the same.</li>
+      </ol>
+    </details>
+    <label class="agree"><input type="checkbox" id="agree"><span>I am 18 or older and I agree to these terms.</span></label>
+    <p class="err" id="err" role="alert"></p>
+    <button class="btn" id="go" type="button">Send booking request</button>
+  </section>
+
+  <section id="result" aria-labelledby="h-res">
+    <img class="msbadge" src="/logo-ms.webp" width="88" height="88" alt="Ms Seduktive">
+    <h2 id="h-res" style="justify-content:center">Request received</h2>
+    <p class="copied" id="copied" aria-live="polite"></p>
+    <p class="blurb">Your request is saved. Now DM me on the app you picked to get payment info. You can paste this summary to speed things up.</p>
+    <textarea id="msg" readonly></textarea>
+    <button class="btn" id="copy" type="button">Copy summary</button>
+    <div class="btnrow">
+      <a class="btn ghost" href="https://onlyfans.com/msseduktive" target="_blank" rel="noopener">Open OnlyFans</a>
+      <a class="btn ghost" href="https://www.fanvue.com/msseduktive" target="_blank" rel="noopener">Open Fanvue</a>
+    </div>
+  </section>
+
+  <footer><img class="msbadge" src="/logo-ms.webp" width="88" height="88" alt="Ms Seduktive" loading="lazy"><br>Seduktive Ent. Adults only. Prices in USD and may change. Your username and a scrambled copy of your PIN are stored so you can log in and see your bookings.</footer>
+</div>
+
+<script>
+(function () {
+  var CATS = [
+    { key: 'custom', name: 'Custom video', rush: true, mode: 'order',
+      blurb: 'A personalised, non-explicit video made for you.',
+      items: [['1 minute', 25], ['3 minutes', 50], ['5 minutes', 65], ['10 minutes', 120], ['15 minutes', 175], ['20 minutes', 250]] },
+    { key: 'call', name: 'Live video call', rush: false, mode: 'live',
+      blurb: 'A live video chat, general conversation.',
+      items: [['5 minutes', 22], ['10 minutes', 40], ['20 minutes', 65], ['30 minutes', 125]] },
+    { key: 'photo', name: 'Photo pack', rush: true, mode: 'order',
+      blurb: 'Professional themed photos, delivered in chat.',
+      items: [['10 photos', 20], ['25 photos', 40]] },
+    { key: 'msg', name: 'Voice or video message', rush: true, mode: 'order',
+      blurb: 'A personal greeting or shout-out recorded for you.',
+      items: [['Voice message, 1 to 3 min', 10], ['Video greeting, 1 to 2 min', 20], ['Birthday video, 2 to 5 min', 30]] },
+    { key: 'vip', name: 'VIP', rush: false, mode: 'vip',
+      blurb: 'Private VIP Telegram group for OnlyFans subscribers. Personalised calls, photo and video packages, alerts and polls. The price rises to $75 a month on Nov 14.',
+      items: [['1 month', 39.99]] },
+    { key: 'person', name: 'In person', rush: false, mode: 'person',
+      blurb: 'Social companionship in public places. Booking is confirmed only after a short video chat and your deposit.',
+      items: [
+        ['1 hour', 75, 'Casual outing'], ['2 hours', 140, 'Casual outing'], ['4 hours', 250, 'Casual outing'],
+        ['Up to 2 hours', 150, 'Dinner date'], ['Up to 3 hours', 200, 'Dinner date'], ['Up to 4 hours', 275, 'Dinner date'],
+        ['2 hours', 175, 'Event companion'], ['4 hours', 300, 'Event companion'], ['6 hours', 425, 'Event companion'],
+        ['Half day, 4 hours', 250, 'Tourism companion'], ['Full day, 8 hours', 450, 'Tourism companion']
+      ] }
+  ];
+  // VIP price: $39.99 now, $75 from Nov 14, 2026 (local date).
+  (function () { var n = new Date(); if (n >= new Date(2026, 10, 14)) CATS[4].items[0][1] = 75; })();
+  var cat = CATS[0], pick = null, me = null;
+  var $ = function (id) { return document.getElementById(id); };
+  function money(n) { return '$' + (Math.round(n * 100) % 100 === 0 ? Math.round(n) : n.toFixed(2)); }
+
+  /* ---------- API helper ---------- */
+  function api(path, method, body) {
+    return fetch(path, {
+      method: method || 'GET',
+      headers: body ? { 'Content-Type': 'application/json' } : {},
+      body: body ? JSON.stringify(body) : undefined,
+      credentials: 'same-origin'
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) {
+        if (!r.ok) throw new Error(j.error || 'Something went wrong.');
+        return j;
+      });
+    });
+  }
+
+  /* ---------- account ---------- */
+  function showAccount() {
+    $('acctOut').hidden = !!me; $('acctIn').hidden = !me;
+    if (me) { $('whoName').textContent = me; loadMine(); }
+  }
+  function loadMine() {
+    api('/api/bookings').then(function (j) {
+      var box = $('mine'); box.innerHTML = '';
+      if (!j.bookings.length) { box.textContent = 'No bookings yet.'; return; }
+      j.bookings.forEach(function (b) {
+        var d = document.createElement('div');
+        var l = document.createElement('span');
+        l.textContent = '#' + b.id + ' ' + b.service + ', ' + b.option + ' (' + money(Number(b.total)) + ')';
+        var s = document.createElement('span'); s.className = 'tag'; s.textContent = b.status;
+        d.appendChild(l); d.appendChild(s); box.appendChild(d);
+      });
+    }).catch(function () {});
+  }
+  function auth(path) {
+    $('acctErr').textContent = '';
+    api(path, 'POST', { username: $('au').value, pin: $('ap').value })
+      .then(function (j) { me = j.username; $('ap').value = ''; showAccount(); })
+      .catch(function (e) { $('acctErr').textContent = e.message; });
+  }
+  $('doLogin').onclick = function () { auth('/api/login'); };
+  $('doSignup').onclick = function () { auth('/api/signup'); };
+  $('doLogout').onclick = function () { api('/api/logout', 'POST', {}).then(function () { me = null; showAccount(); }); };
+  api('/api/me').then(function (j) { me = j.username; showAccount(); }).catch(function () {});
+
+  /* ---------- service picker ---------- */
+  function drawTabs() {
+    var t = $('tabs'); t.innerHTML = '';
+    CATS.forEach(function (c) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.textContent = c.name;
+      b.setAttribute('aria-pressed', c === cat ? 'true' : 'false');
+      b.onclick = function () { cat = c; pick = null; drawTabs(); drawOpts(); sync(); };
+      t.appendChild(b);
+    });
+  }
+  function drawOpts() {
+    $('blurb').textContent = cat.blurb;
+    var o = $('opts'); o.innerHTML = '';
+    var lastG = null;
+    cat.items.forEach(function (it, i) {
+      if (it[2] && it[2] !== lastG) { var gh = document.createElement('div'); gh.className = 'grp'; gh.textContent = it[2]; o.appendChild(gh); lastG = it[2]; }
+      var l = document.createElement('label'); l.className = 'opt';
+      var r = document.createElement('input'); r.type = 'radio'; r.name = 'opt'; r.value = i;
+      r.onchange = function () { pick = it; sync(); };
+      var s = document.createElement('span');
+      var a = document.createElement('em'); a.textContent = it[0];
+      var p = document.createElement('b'); p.textContent = money(it[1]) + (cat.mode === 'vip' ? '/mo' : '');
+      s.appendChild(a); s.appendChild(p);
+      l.appendChild(r); l.appendChild(s); o.appendChild(l);
+    });
+  }
+  function weekend() { var v = $('date').value; if (!v) return false; var g = new Date(v + 'T12:00:00').getDay(); return g === 0 || g === 6; }
+  $('date').onchange = sync;
+  function rushVal() { return cat.rush ? Number($('rush').value) : 0; }
+  function extra() {
+    if (cat.mode === 'person') return weekend() && pick ? Math.round(pick[1] * 0.2 * 100) / 100 : 0;
+    return rushVal();
+  }
+  function depositFor(total) {
+    if (cat.mode === 'person') return total / 2;
+    if (cat.mode === 'vip' || cat.mode === 'live') return total;
+    return total < 100 ? total : total / 2;
+  }
+  function sync() {
+    var live = cat.mode === 'live', vip = cat.mode === 'vip', person = cat.mode === 'person';
+    $('rushField').hidden = !cat.rush;
+    $('dateField').hidden = !(live || person); $('timeField').hidden = !(live || person);
+    $('areaField').hidden = !person; $('withField').hidden = !person;
+    $('personTerms').hidden = !person;
+    $('rushSec').hidden = vip;
+    $('h-rush-t').textContent = (live || person) ? 'Date and time' : 'Delivery speed';
+    $('sumRushK').textContent = person ? 'Weekend surcharge (+20%)' : 'Delivery speed';
+    var base = pick ? pick[1] : 0, rush = extra();
+    var total = base + rush;
+    $('sumName').textContent = pick ? (pick[2] ? pick[2] + ', ' : cat.name + ', ') + pick[0] : 'Nothing selected yet';
+    $('sumBase').textContent = money(base);
+    $('sumRush').textContent = money(rush);
+    $('sumTotal').textContent = money(total) + (vip ? '/mo' : '');
+    var line = 'Pick a service to see how payment works.';
+    if (pick) {
+      if (vip) line = 'Join by paying in chat. You need to be an OnlyFans subscriber first.';
+      else if (person) line = 'Deposit to confirm: ' + money(total / 2) + ' (50%). Balance of ' + money(total / 2) + ' before we meet. Booking is confirmed after a short video chat and your deposit.';
+      else if (live) line = 'Pay in full before the session: ' + money(total) + '. The call is confirmed once I receive it.';
+      else if (total < 100) line = 'Pay in full before I start: ' + money(total) + '.';
+      else line = 'Deposit to start: ' + money(total / 2) + '. Balance of ' + money(total / 2) + ' due before delivery.';
+    }
+    $('payLine').textContent = line;
+  }
+  $('rush').onchange = sync;
+
+  var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+  $('date').min = d.toISOString().slice(0, 10);
+
+  /* ---------- submit ---------- */
+  $('go').onclick = function () {
+    var nick = $('nick').value.trim(), handle = $('handle').value.trim(), err = $('err'), btn = $('go');
+    var person = cat.mode === 'person', vip = cat.mode === 'vip', live = cat.mode === 'live';
+    if (!me) { err.textContent = 'Log in or create an account at the top first.'; $('au').focus(); return; }
+    if (!pick) { err.textContent = 'Choose a service and an option first.'; return; }
+    if ((live || person) && !$('date').value) { err.textContent = 'Choose a preferred date.'; return; }
+    if (!nick) { err.textContent = 'Add the name you want me to use.'; $('nick').focus(); return; }
+    if (!handle) { err.textContent = 'Add your username so I can find your chat.'; $('handle').focus(); return; }
+    if (person && !$('area').value.trim()) { err.textContent = 'Add the area or venue you have in mind.'; $('area').focus(); return; }
+    if (!$('agree').checked) { err.textContent = 'Tick the box to confirm you are 18+ and agree to the terms.'; return; }
+    err.textContent = '';
+
+    var rush = extra(), total = pick[1] + rush, dep = depositFor(total);
+    var svc = pick[2] ? pick[2] : cat.name;
+    var delivery = cat.rush ? $('rush').options[$('rush').selectedIndex].text.replace(/ \(.*\)/, '') : null;
+    var L = [];
+    L.push('SEDUKTIVE ENT REQUEST');
+    L.push('Name: ' + nick);
+    L.push('App: ' + $('plat').value + ' (' + handle + ')');
+    L.push('Service: ' + svc + ', ' + pick[0]);
+    if (person) { L.push('Book with: ' + $('withWho').value); L.push('Area: ' + $('area').value.trim()); }
+    if (live || person) L.push('Preferred: ' + $('date').value + ', ' + $('time').value.toLowerCase());
+    if (delivery) L.push('Delivery: ' + delivery);
+    L.push('Total: ' + money(total) + ' USD' + (vip ? ' per month' : ''));
+    if (person) L.push('Deposit: ' + money(dep) + ' (50%), balance before we meet. Video chat first.');
+    else if (!vip && !live && total >= 100) L.push('Deposit: ' + money(dep) + ' now, balance before delivery');
+    if ($('notes').value.trim()) L.push('Details: ' + $('notes').value.trim());
+    L.push('I am 18+ and I agree to the Seduktive Ent terms' + (person ? ' including the in-person terms.' : '.'));
+
+    btn.disabled = true; btn.textContent = 'Sending...';
+    api('/api/bookings', 'POST', {
+      service: svc, option: pick[0], total: total, deposit: dep,
+      app: $('plat').value, handle: handle, nickname: nick,
+      preferred_date: (live || person) ? $('date').value : null,
+      preferred_time: (live || person) ? $('time').value : null,
+      area: person ? $('area').value.trim() : null,
+      book_with: person ? $('withWho').value : null,
+      delivery: delivery,
+      notes: $('notes').value.trim(),
+      request_text: L.join('\n')
+    }).then(function (j) {
+      $('msg').value = 'Booking #' + j.id + '\n' + L.join('\n');
+      $('copied').textContent = 'Booking #' + j.id + ' saved.';
+      $('result').classList.add('show');
+      $('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      loadMine();
+    }).catch(function (e) {
+      err.textContent = e.message;
+    }).then(function () { btn.disabled = false; btn.textContent = 'Send booking request'; });
+  };
+  $('copy').onclick = function () {
+    var ta = $('msg'), ok = function () { $('copied').textContent = 'Copied. Paste it into my chat.'; };
+    var fb = function () { ta.focus(); ta.select(); try { if (document.execCommand('copy')) { ok(); return; } } catch (e) {} $('copied').textContent = 'Text selected. Copy it manually.'; };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(ta.value).then(ok, fb); else fb();
+  };
+
+  drawTabs(); drawOpts();
+  pick = cat.items[1]; document.querySelectorAll('#opts input')[1].checked = true;
+  sync();
+})();
+</script>
+
+</html>
