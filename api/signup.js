@@ -12,7 +12,8 @@ export default async function handler(req, res) {
   const { data, error } = await db.from('users').insert({ username: u, pin_hash }).select('id, username').single();
   if (error) {
     if (error.code === '23505') return bad(res, 409, 'That username is taken.');
-    return bad(res, 500, 'Could not create account.');
+   console.error('signup error', error.code, error.message);
+return bad(res, 500, 'Could not create account. Error code: ' + (error.code || error.message || 'unknown').toString().slice(0, 60));
   }
   setCookie(res, 'sid', await sign({ role: 'user', uid: data.id, username: data.username }, 30), 30 * 86400);
   res.json({ username: data.username });
