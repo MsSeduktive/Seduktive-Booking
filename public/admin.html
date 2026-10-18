@@ -55,7 +55,7 @@ summary { cursor:pointer; color:var(--accent); font-size:12px; }
         <option value="">All statuses</option>
         <option>pending</option><option>confirmed</option><option>paid</option><option>completed</option><option>cancelled</option>
       </select>
-      <input type="text" id="search" placeholder="Search user, handle, service">
+      <input type="text" id="search" placeholder="Search user, handle, source">
       <button class="ghost" id="refresh" type="button">Refresh</button>
       <button class="ghost" id="logout" type="button">Log out</button>
     </div>
@@ -95,7 +95,7 @@ summary { cursor:pointer; color:var(--accent); font-size:12px; }
     var q = $('search').value.trim().toLowerCase();
     var list = all.filter(function (b) {
       if (!q) return true;
-      return [b.users && b.users.username, b.handle, b.nickname, b.service, b.option, b.app].join(' ').toLowerCase().indexOf(q) > -1;
+      return [b.users && b.users.username, b.handle, b.nickname, b.service, b.option, b.app, b.request_text].join(' ').toLowerCase().indexOf(q) > -1;
     });
     // stats
     var st = $('stats'); st.innerHTML = '';

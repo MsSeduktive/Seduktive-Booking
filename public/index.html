@@ -203,6 +203,12 @@ footer { border-top: 1px solid var(--line); padding-top: 16px; color: var(--mute
       </div>
     </div>
     <div class="field">
+      <label for="found">How did you find me?</label>
+      <select id="found">
+        <option>OnlyFans</option><option>Fanvue</option><option>Telegram</option><option>X (Twitter)</option><option>Instagram</option><option>Snapchat</option><option>Reddit</option><option>Friend or referral</option><option>Other</option>
+      </select>
+    </div>
+    <div class="field">
       <label for="handle">Your username or number on that app</label>
       <input type="text" id="handle" placeholder="So I can find your chat" autocomplete="off">
       <span class="hint">No legal name, phone number or address needed. I don't collect them.</span>
@@ -296,7 +302,7 @@ footer { border-top: 1px solid var(--line); padding-top: 16px; color: var(--mute
         ['1 hour', 75, 'Casual outing'], ['2 hours', 140, 'Casual outing'], ['4 hours', 250, 'Casual outing'],
         ['Up to 2 hours', 150, 'Dinner date'], ['Up to 3 hours', 200, 'Dinner date'], ['Up to 4 hours', 275, 'Dinner date'],
         ['2 hours', 175, 'Event companion'], ['4 hours', 300, 'Event companion'], ['6 hours', 425, 'Event companion'],
-        ['Half day, 4 hours', 250, 'Tourism companion'], ['Full day, 8 hours', 450, 'Tourism companion'],['Sex Only, 30 minutes', 100, 'In Person'], ['BJ, 30 minutes', 50, 'In Person'],  ['Sex + BJ, 30 minutes', 150, 'In Person']
+        ['Half day, 4 hours', 250, 'Tourism companion'], ['Full day, 8 hours', 450, 'Tourism companion']
       ] }
   ];
   // VIP price: $39.99 now, $75 from Nov 14, 2026 (local date).
@@ -438,6 +444,7 @@ footer { border-top: 1px solid var(--line); padding-top: 16px; color: var(--mute
     L.push('SEDUKTIVE ENT REQUEST');
     L.push('Name: ' + nick);
     L.push('App: ' + $('plat').value + ' (' + handle + ')');
+    L.push('Found me via: ' + $('found').value);
     L.push('Service: ' + svc + ', ' + pick[0]);
     if (person) { L.push('Book with: ' + $('withWho').value); L.push('Area: ' + $('area').value.trim()); }
     if (live || person) L.push('Preferred: ' + $('date').value + ', ' + $('time').value.toLowerCase());
